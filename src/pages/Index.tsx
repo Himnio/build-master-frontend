@@ -83,7 +83,11 @@ const Index = () => {
 
         {/* Install Form */}
         <div className="mb-8">
-          <InstallForm onInstall={handleInstall} isLoading={isLoading} />
+          <InstallForm
+            onInstall={handleInstall}
+            isLoading={isLoading}
+            onLogUpdate={(log: string) => setLogs((prev) => [...prev, log])}
+          />
         </div>
 
         {/* Build Logs */}
@@ -92,7 +96,7 @@ const Index = () => {
         </div>
 
         {/* Build Monitor */}
-        <BuildMonitor builds={builds} />
+        {/* <BuildMonitor builds={builds} /> */}
       </div>
     </div>
   );
