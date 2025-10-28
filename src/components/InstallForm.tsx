@@ -61,6 +61,7 @@ export const InstallForm = ({ onInstall, isLoading, onLogUpdate }: InstallFormPr
           { name: "ANDROID_TV", ip: "192.168.0.20", mac: "", type: "wireless" },
           { name: "ROKU_EXPRESS_4K", ip: "192.168.0.30", mac: "", type: "wireless" },
           { name: "IPHONE", ip: "192.168.0.40", mac: "", type: "wireless" },
+          { name: "IPHONE", ip: "192.168.1.40", mac: "", type: "wireless" },
         ]);
       }
     };
@@ -74,16 +75,16 @@ export const InstallForm = ({ onInstall, isLoading, onLogUpdate }: InstallFormPr
       .catch((err) => console.log("Error loading build.json file", err));
   }, []);
 
-  const handleDeviceSelect = async (deviceName: string) => {
-    setSelectedDevice(deviceName);
+  const handleDeviceSelect = async (deviceIp: string) => {
+    setSelectedDevice(deviceIp);
 
-    const device = devices.find((d) => d.name === deviceName);
+    const device = devices.find((d) => d.ip === deviceIp);
     if (!device || !device.ip) {
-      onLogUpdate(`⚠️ No IP found for device ${deviceName}`);
+      onLogUpdate(`⚠️ No IP found for device ${deviceIp}`);
       return;
     }
 
-    onLogUpdate(`🔄 Connecting to ${deviceName} (${device.ip})...`);
+    onLogUpdate(`🔄 Connecting to ${device.name} (${device.ip})...`);
 
     try {
       const response = await fetch("http://localhost:8000/api/adb/connect", {
@@ -96,13 +97,13 @@ export const InstallForm = ({ onInstall, isLoading, onLogUpdate }: InstallFormPr
       });
 
       if (response.ok) {
-        onLogUpdate(`✅ Connected successfully to ${deviceName}`);
+        onLogUpdate(`✅ Connected successfully to ${device.name}`);
       } else {
         const errorText = await response.text();
-        onLogUpdate(`❌ Failed to connect to ${deviceName}: ${errorText}`);
+        onLogUpdate(`❌ Failed to connect to ${device.name}: ${errorText}`);
       }
     } catch (err: any) {
-      onLogUpdate(`❌ Error connecting to ${deviceName}: ${err.message}`);
+      onLogUpdate(`❌ Error connecting to ${device.name}: ${err.message}`);
     }
   };
 
@@ -142,7 +143,7 @@ export const InstallForm = ({ onInstall, isLoading, onLogUpdate }: InstallFormPr
 
       if (response.ok) {
         onLogUpdate(`✅ Build push completed successfully for ${device.name}`);
-        onInstall(selectedDevice, selectedVersion, buildPath);
+        // onInstall(selectedDevice, selectedVersion, buildPath);
       } else {
         const errorText = await response.text();
         onLogUpdate(`❌ Build push failed for ${device.name}: ${errorText}`);
@@ -170,8 +171,8 @@ export const InstallForm = ({ onInstall, isLoading, onLogUpdate }: InstallFormPr
               </SelectItem>
             ) : (
               devices.map((device, i) => (
-                <SelectItem key={i} value={device.name}>
-                  {device.name} ({device.type})
+                <SelectItem key={device.ip} value={device.ip}>
+                  {device.name} ({device.ip})
                 </SelectItem>
               ))
             )}
