@@ -17,7 +17,7 @@ export const BuildLogs = ({ logs }: BuildLogsProps) => {
     <Card className="bg-terminal-bg border-border p-6">
       <div className="flex items-center gap-2 mb-4">
         <Terminal className="h-5 w-5 text-primary" />
-        <h2 className="text-lg font-semibold">Build Logs</h2>
+        <h2 className="text-lg font-semibold">Logs..</h2>
       </div>
       
       <div className="bg-background rounded-lg p-4 h-64 overflow-y-auto terminal-font text-sm">

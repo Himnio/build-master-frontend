@@ -44,13 +44,18 @@ export const InstallForm = ({ onInstall, isLoading, onLogUpdate }: InstallFormPr
         const res = await fetch("http://localhost:8000/api/devices");
         if (!res.ok) throw new Error("Failed to fetch devices");
         const data = await res.json();
+        onLogUpdate("✅ Devices are getting fetched from the network...");
+        onLogUpdate("On process .....")
+        
         if (data.devices && data.success) {
           setDevices(data.devices);
+        onLogUpdate("✅ Devices found on the network:..");
         } else {
           throw new Error("No devices found");
         }
       } catch (error) {
         console.warn("⚠️ API unavailable — using mock device list", error);
+        onLogUpdate("⚠️ No devices found on the network");
         setDevices([
           { name: "ANDROID_MOBILE", ip: "192.168.0.10", mac: "", type: "wireless" },
           { name: "ANDROID_TV", ip: "192.168.0.20", mac: "", type: "wireless" },
