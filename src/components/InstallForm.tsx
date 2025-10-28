@@ -121,7 +121,9 @@ export const InstallForm = ({ onInstall, isLoading, onLogUpdate }: InstallFormPr
       return;
     }
 
-    const localFilePath = `/Users/604577022/Downloads/${buildPath.split("/").pop()}`;
+    const localFilePath = buildPath;
+
+    console.log("local file path:................................", localFilePath);
 
     onLogUpdate(`📦 Build push pending for ${device.name}...`);
     setLoadingInstall(true);
@@ -156,7 +158,7 @@ export const InstallForm = ({ onInstall, isLoading, onLogUpdate }: InstallFormPr
     <div className="flex flex-col sm:flex-row gap-4 items-end">
       {/* Device Selector */}
       <div className="flex-1 w-full">
-        <label className="text-sm font-medium mb-2 block text-muted-foreground">Device Platform</label>
+        <label className="text-sm font-medium mb-2 block text-muted-foreground">Connected Devices</label>
         <Select value={selectedDevice} onValueChange={handleDeviceSelect}>
           <SelectTrigger className="w-full bg-secondary border-border">
             <SelectValue placeholder="Select device..." />
@@ -224,9 +226,9 @@ export const InstallForm = ({ onInstall, isLoading, onLogUpdate }: InstallFormPr
                 Loading...
               </SelectItem>
             ) : (
-              Object.entries(version).map(([ver, path]) => (
+              Object.entries(version).map(([ver]) => (
                 <SelectItem key={ver} value={ver}>
-                  {ver} — <span className="text-xs text-muted-foreground">{path}</span>
+                  {ver}
                 </SelectItem>
               ))
             )}
